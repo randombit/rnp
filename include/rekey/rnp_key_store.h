@@ -41,6 +41,7 @@
 
 typedef struct rnp_t     rnp_t;
 typedef struct pgp_key_t pgp_key_t;
+typedef struct pgp_io_t pgp_io_t;
 
 typedef enum {
     KBX_EMPTY_BLOB = 0,
