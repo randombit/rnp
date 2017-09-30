@@ -674,13 +674,12 @@ rnp_keyring_save_to_file(rnp_keyring_t ring, const char *path)
 {
     const char *cur_path = ring->store->path;
     bool        armor = false;
-    const char *passphrase = "fixme";
 
     if (path)
         ring->store->path = path;
 
     bool ok =
-      rnp_key_store_write_to_file(&g_ffi_io, ring->store, (const uint8_t *) passphrase, armor);
+      rnp_key_store_write_to_file(&g_ffi_io, ring->store, armor);
 
     if (path)
         ring->store->path = cur_path;
@@ -698,13 +697,12 @@ rnp_keyring_save_to_mem(
     bool         armor = (flags & RNP_EXPORT_FLAG_ARMORED);
     pgp_memory_t memory;
 
-    bool ok = rnp_key_store_write_to_mem(
-      NULL, ring->store, (const uint8_t *) passphrase, armor, &memory);
+    bool ok = rnp_key_store_write_to_mem(&g_ffi_io, ring->store, armor, &memory);
 
     if (!ok)
         return RNP_ERROR_GENERIC;
 
-    return RNP_SUCCESS;
+    return RNP_ERROR_NOT_IMPLEMENTED;
 }
 
 static pgp_key_t *
@@ -784,8 +782,8 @@ rnp_insert_armored_public_key(rnp_keyring_t keyring, const char *key)
     }
 
     // update the keyrings on disk
-    if (!rnp_key_store_write_to_file(rnp, rnp->secring, NULL, 0) ||
-        !rnp_key_store_write_to_file(rnp, rnp->pubring, NULL, 0)) {
+    if (!rnp_key_store_write_to_file(rnp, rnp->secring, 0) ||
+        !rnp_key_store_write_to_file(rnp, rnp->pubring, 0)) {
         RNP_LOG("failed to write keyring");
         goto done;
     }
@@ -1968,8 +1966,8 @@ rnp_generate_private_key(rnp_key_t *   pubkey,
     }
 
     // update the keyring on disk
-    if (!rnp_key_store_write_to_file(&g_ffi_io, secring->store, NULL, 0) ||
-        !rnp_key_store_write_to_file(&g_ffi_io, pubring->store, NULL, 0)) {
+    if (!rnp_key_store_write_to_file(&g_ffi_io, secring->store, 0) ||
+        !rnp_key_store_write_to_file(&g_ffi_io, pubring->store, 0)) {
         rc = RNP_ERROR_WRITE;
         goto done;
     }
