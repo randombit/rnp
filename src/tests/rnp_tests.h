@@ -97,6 +97,10 @@ void test_key_protect_load_pgp(void **state);
 
 void test_ffi_api(void **state);
 
+void test_ffi_homedir(void **state);
+
+void test_ffi_keygen_json(void **state);
+
 void test_key_add_userid(void **state);
 
 void test_repgp_decrypt(void **state);

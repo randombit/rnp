@@ -161,8 +161,10 @@ main(int argc, char *argv[])
       cmocka_unit_test(pgp_compress_roundtrip),
       cmocka_unit_test(test_key_unlock_pgp),
       cmocka_unit_test(test_key_protect_load_pgp),
+      cmocka_unit_test(test_key_add_userid),
       cmocka_unit_test(test_ffi_api),
-      cmocka_unit_test(test_key_add_userid)};
+      cmocka_unit_test(test_ffi_homedir),
+      cmocka_unit_test(test_ffi_keygen_json)};
 
     /* Each test entry will invoke setup_test before running
      * and teardown_test after running. */
